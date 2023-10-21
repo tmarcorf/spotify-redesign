@@ -2,28 +2,27 @@ import { inject } from "@angular/core";
 import { Router } from "@angular/router";
 import { SpotifyService } from "../services/spotify.service";
 
-export const usuarioEstaLogadoResolver = () => new Promise(async (res, rej) => {
+const naoAutenticado = (router: Router) => {
+  localStorage.clear();
+  router.navigateByUrl('/login');
+  return false;
+}
+
+export const usuarioEstaLogadoResolver = () => new Promise(async (res) => {
   const spotifyService = inject(SpotifyService);
   const router = inject(Router);
-
-  const naoAutenticado = () => {
-    localStorage.clear();
-    router.navigateByUrl('/login');
-    rej('USUARIO NAO AUTENTICADO!')
-    return false;
-  }
 
   const token = localStorage.getItem('token');
   console.log(token);
   if (!token) {
-    return naoAutenticado();
+    return naoAutenticado(router);
   }
   
   const usuarioCriado = await spotifyService.inicializarUsuario();
   if (usuarioCriado)
     res(true);
   else
-    res(naoAutenticado());
+    res(naoAutenticado(router));
   
   return false;
 })
