@@ -13,7 +13,6 @@ export const usuarioEstaLogadoResolver = () => new Promise(async (res) => {
   const router = inject(Router);
 
   const token = localStorage.getItem('token');
-  console.log(token);
   if (!token) {
     return naoAutenticado(router);
   }
