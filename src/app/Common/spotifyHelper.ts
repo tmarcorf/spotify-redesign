@@ -5,7 +5,7 @@ export function SpotifyUserParaUsuario(user: SpotifyApi.CurrentUsersProfileRespo
     return {
       id: user.id,
       nome: user.display_name,
-      imagemUrl: 'URL da imagem está vazia'
+      imagemUrl: user.images[0].url
     }
  }
 
